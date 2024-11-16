@@ -316,21 +316,19 @@ void systemStop (){
 }
 
 //--------------------------------
-
 #include "PC_FileIO.c"
 
-char* charPointers[10]; 
+char word[11];  // global array storing word (10 characters + null terminator)
 
-char** readWordFromFile(string fileName) {
+int readWordFromFile(string fileName) {
     TFileHandle fin;
     bool fileHandle = openReadPC(fin, fileName);
 
     if (!fileHandle) {
         displayTextLine(4, "Error opening file");
-        return NULL;
+        return -1;  
     }
 
-    char word[10];  // temporary array
     int charCount = 0;
     char c = 0;
     int whiteSpace = 0;
@@ -339,12 +337,13 @@ char** readWordFromFile(string fileName) {
         if (c == ' ' || c == '\n' || c == '\t') {
             whiteSpace = 1;
         } else {
-            word[charCount] = c; 
-            charPointers[charCount] = &word[charCount]; 
+            word[charCount] = c;
             charCount++;
         }
     }
 
+    word[charCount] = '\0';  // null-terminate the string
     closeFilePC(fin);
-    return charPointers;  
+
+    return charCount;  // return the number of characters in word (excluding null terminator)
 }
