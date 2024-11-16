@@ -314,3 +314,40 @@ void systemStop (){
 }
 
 //--------------------------------
+#include "PC_FileIO.c"
+
+char** readFile(string fileName) {
+    TFileHandle fin;
+    bool fileHandle = openReadPC(fin, fileName);
+
+    if (!fileHandle) {
+        displayTextLine(1, "File not found!");
+        return NULL;
+    }
+
+    static char* charPointers[100];
+    static char word[100];
+    int charCount = 0;
+    char c;
+    bool continueReading = true;
+
+    while (readCharPC(fin, c) && continueReading) {
+        if (c != ' ' && c != '\n') {
+            word[charCount] = c;
+            charPointers[charCount] = &word[charCount];
+            charCount++;
+
+            if (charCount >= sizeof(word) - 1) {
+                continueReading = false;
+            }
+        } else {
+            continueReading = false;
+        }
+    }
+
+    word[charCount] = '\0';
+    charPointers[charCount] = NULL;
+    closeFilePC(fin);
+
+    return charPointers;
+}
