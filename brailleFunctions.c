@@ -240,6 +240,7 @@ void systemStart()
 }
 
 //--------------------------------
+/*
 string readWord(ifstream inputFile)
 {
         string words;
@@ -248,6 +249,7 @@ string readWord(ifstream inputFile)
 
         return words;
 }
+*/
 
 //--------------------------------
 void printWord(string words,int alphabet[][][], int print[])
@@ -314,40 +316,35 @@ void systemStop (){
 }
 
 //--------------------------------
+
 #include "PC_FileIO.c"
 
-char** readFile(string fileName) {
+char* charPointers[10]; 
+
+char** readWordFromFile(string fileName) {
     TFileHandle fin;
     bool fileHandle = openReadPC(fin, fileName);
 
     if (!fileHandle) {
-        displayTextLine(1, "File not found!");
+        displayTextLine(4, "Error opening file");
         return NULL;
     }
 
-    static char* charPointers[100];
-    static char word[100];
+    char word[10];  // temporary array
     int charCount = 0;
-    char c;
-    bool continueReading = true;
+    char c = 0;
+    int whiteSpace = 0;
 
-    while (readCharPC(fin, c) && continueReading) {
-        if (c != ' ' && c != '\n') {
-            word[charCount] = c;
-            charPointers[charCount] = &word[charCount];
-            charCount++;
-
-            if (charCount >= sizeof(word) - 1) {
-                continueReading = false;
-            }
+    while (readCharPC(fin, c) && charCount < 10 && whiteSpace == 0) {
+        if (c == ' ' || c == '\n' || c == '\t') {
+            whiteSpace = 1;
         } else {
-            continueReading = false;
+            word[charCount] = c; 
+            charPointers[charCount] = &word[charCount]; 
+            charCount++;
         }
     }
 
-    word[charCount] = '\0';
-    charPointers[charCount] = NULL;
     closeFilePC(fin);
-
-    return charPointers;
+    return charPointers;  
 }
