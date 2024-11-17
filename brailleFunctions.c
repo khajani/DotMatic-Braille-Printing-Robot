@@ -347,3 +347,236 @@ int readWordFromFile(string fileName) {
 
     return charCount;  // return the number of characters in word (excluding null terminator)
 }
+
+//--------------------------------
+int alpha[26][3][2] = {
+    {
+        {0,1},
+        {0,0},
+        {0,0}
+    }, //A
+
+    {
+        {0,1},
+        {0,1},
+        {0,0}
+    }, //B
+
+    {
+        {1,1},
+        {0,0},
+        {0,0}
+    }, //C
+
+    {
+        {1,1},
+        {1,0},
+        {0,0}
+    }, //D
+
+    {
+        {0,1},
+        {1,0},
+        {0,0}
+    }, //E
+
+    {
+        {1,1},
+        {0,1},
+        {0,0}
+    }, //F
+
+    {
+        {1,1},
+        {1,1},
+        {0,0}
+    }, //G
+
+    {
+        {0,1},
+        {1,1},
+        {0,0}
+    }, //H
+
+    {
+        {1,0},
+        {0,1},
+        {0,0}
+    }, //I
+
+    {
+        {1,0},
+        {1,1},
+        {0,0}
+    }, //J
+
+    {
+        {0,1},
+        {0,0},
+        {0,1}
+    }, //K
+
+    {
+        {0,1},
+        {0,1},
+        {0,1}
+    }, //L
+
+    {
+        {1,1},
+        {0,0},
+        {0,1}
+    }, //M
+
+    {
+        {1,1},
+        {1,0},
+        {0,1}
+    }, //N
+
+    {
+        {0,1},
+        {1,0},
+        {0,1}
+    }, //O
+
+    {
+        {1,1},
+        {0,1},
+        {0,1}
+    }, //P
+
+    {
+        {1,1},
+        {1,1},
+        {0,1}
+    }, //Q
+
+    {
+        {0,1},
+        {1,1},
+        {0,1}
+    }, //R
+
+    {
+        {1,0},
+        {0,1},
+        {0,1}
+    }, //S
+
+    {
+        {1,0},
+        {1,1},
+        {0,1}
+    }, //T
+
+    {
+        {0,1},
+        {0,0},
+        {1,1}
+    }, //U
+
+    {
+        {0,1},
+        {0,1},
+        {1,1}
+    }, //V
+
+    {
+        {1,0},
+        {1,1},
+        {1,0}
+    }, //W
+
+    {
+        {1,1},
+        {0,0},
+        {1,1}
+    }, //X
+
+    {
+        {1,1},
+        {1,0},
+        {1,1}
+    }, //Y
+
+    {
+        {0,1},
+        {1,0},
+        {1,1}
+    }, //Z
+};
+
+char wrd[10] = {'h','e','l','l','o','w','o','r','l','d'};
+
+void printRow(int *ptr, int len);
+void printWrd(int wrdLen);
+
+void movePaper(int deg);
+void moveCart(int deg);
+void moveCrank(int deg);
+
+task main()
+{
+	/*
+	motor[motorA] = -10; //paper
+	motor[motorD] = -10; //cart
+	motor[motorC] = 30;  //crank
+	wait1Msec(10000);
+	*/
+	int wrdLen = 10;
+	printWrd(wrdLen);
+}
+
+void printWrd(int wrdLen) {
+    int row[wrdLen*2];
+    int indices[wrdLen];
+
+    for (int i = 0; i < wrdLen; i++) {
+        //determining indices to be used for alpha (using aski codes)
+        //i.e. what letter is in wrd[i]
+        indices[i] = wrd[i] - 'a';
+    }
+
+    for(int i = 0; i < 3; i++) {
+        int k = 0;
+        for (int j = 0; j < wrdLen; j++) {
+            row[k]=alpha[indices[j]][i][0];
+            row[k+1]=alpha[indices[j]][i][1];
+            k+=2;
+        }
+        printRow(&row[0], wrdLen*2);
+    }
+
+}
+
+void printRow(int *ptr, int len) {
+	for (int i = 0; i<len; i++) {
+		if (*ptr) {
+			moveCrank(360);
+		}
+		moveCart(8.25);
+		ptr++;
+	}
+}
+
+void movePaper(int deg){
+	nMotorEncoder[motorA] = 0;
+	motor[motorA] = -10;
+	while (nMotorEncoder[motorA] <= deg) {}
+	motor[motorA] = 0;
+}
+
+void moveCart(int deg){
+	nMotorEncoder[motorD] = 0;
+	motor[motorD] = -10;
+	while (nMotorEncoder[motorD] <= deg) {}
+	motor[motorD] = 0;
+}
+
+void moveCrank(int deg){
+	nMotorEncoder[motorC] = 0;
+	motor[motorC] = -10;
+	while (nMotorEncoder[motorC] <= deg) {}
+	motor[motorC] = 0;
+}
