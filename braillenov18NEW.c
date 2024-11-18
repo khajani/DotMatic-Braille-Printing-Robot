@@ -45,7 +45,7 @@ task main()
 #include "PC_FileIO.c"
 //--------------------------------
 //configure sensors
-SensorType [S1] = sensorEV3 Touch ;
+SensorType [S1] = sensorEV3_Touch ;
 int statusEStop = SensorValue[S1];
 
 //--------------------------------
@@ -163,7 +163,7 @@ int alpha[26][6] =
     {0,1,1,0,1,1}, //Z
 };
 
-char wrd[5] = {'h','e','l','l','o'};
+//char wrd[5] = {'h','e','l','l','o'};
 
 void printRow(int *ptr, int len);
 void printWrd(int wrdLen);
@@ -197,8 +197,8 @@ void printWrd(int wrdLen) {
     for(int i = 0; i < 3; i++) {
         int k = 0;
         for (int j = 0; j < wrdLen; j++) {
-            row[k]=AB[indices[j]][i*2];
-            row[k+1]=AB[indices[j]][i*2 + 1];
+            row[k]=alpha[indices[j]][i*2];
+            row[k+1]=alpha[indices[j]][i*2 + 1];
             k+=2;
         }
         printRow(&row[0], wrdLen*2);
