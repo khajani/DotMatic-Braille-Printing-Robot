@@ -43,10 +43,6 @@ task main()
 */
 
 #include "PC_FileIO.c"
-//--------------------------------
-//configure sensors
-SensorType [S1] = sensorEV3_Touch ;
-int statusEStop = SensorValue[S1];
 
 //--------------------------------
 void systemStart()
@@ -238,12 +234,15 @@ void moveCrank(int deg){
 }
 
 task main() {
-    systemStart();
-
-    string fileName = "input.txt";
-
-    int wordLength = readWordFromFile(fileName);
-    if (wordLength < 0) {
+	SensorType [S1] = sensorEV3_Touch;
+	int statusEStop = SensorValue[S1];
+	
+	systemStart();
+	string fileName = "input.txt";
+	
+	int wordLength = readWordFromFile(fileName);
+    
+	if (wordLength < 0) {
         displayTextLine(5, "Exiting due to file read error.");
         //return;
     }
