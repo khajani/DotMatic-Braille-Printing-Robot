@@ -3,6 +3,7 @@
 
 #include "PC_FileIO.c"
 
+<<<<<<< HEAD:braillenov18NEW.c
 char chars[11];  // global array storing word (10 characters + null terminator)
 
 int readWordFromFile(string fileName) {
@@ -43,6 +44,10 @@ task main()
 */
 
 #include "PC_FileIO.c"
+=======
+//heloooo
+
+>>>>>>> ac5fb29fc1a3626d5b28c8b61cad525ada6ab809:braillenov18.c
 //--------------------------------
 //configure sensors
 SensorType [S1] = sensorEV3 Touch ;
