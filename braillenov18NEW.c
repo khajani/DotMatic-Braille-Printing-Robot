@@ -1,4 +1,4 @@
- 
+
 /*
 
 #include "PC_FileIO.c"
@@ -64,7 +64,7 @@ void systemStart()
 }
 
 //--------------------------------
-char word[11];  // global array storing word (10 characters + null terminator)
+char wrd[11];  // global array storing word (10 characters + null terminator)
 
 int readWordFromFile(string fileName) {
     TFileHandle fin;
@@ -83,12 +83,12 @@ int readWordFromFile(string fileName) {
         if (c == ' ' || c == '\n' || c == '\t') {
             whiteSpace = 1;
         } else {
-            word[charCount] = c;
+            wrd[charCount] = c;
             charCount++;
         }
     }
 
-    word[charCount] = '\0';  // null-terminate the string
+    wrd[charCount] = '\0';  // null-terminate the string
     closeFilePC(fin);
 
     return charCount;  // return the number of characters in word (excluding null terminator)
@@ -133,172 +133,63 @@ void systemStop (){
 }
 
 //--------------------------------
-int alpha[26][3][2] = {
-    {
-        {0,1},
-        {0,0},
-        {0,0}
-    }, //A
-
-    {
-        {0,1},
-        {0,1},
-        {0,0}
-    }, //B
-
-    {
-        {1,1},
-        {0,0},
-        {0,0}
-    }, //C
-
-    {
-        {1,1},
-        {1,0},
-        {0,0}
-    }, //D
-
-    {
-        {0,1},
-        {1,0},
-        {0,0}
-    }, //E
-
-    {
-        {1,1},
-        {0,1},
-        {0,0}
-    }, //F
-
-    {
-        {1,1},
-        {1,1},
-        {0,0}
-    }, //G
-
-    {
-        {0,1},
-        {1,1},
-        {0,0}
-    }, //H
-
-    {
-        {1,0},
-        {0,1},
-        {0,0}
-    }, //I
-
-    {
-        {1,0},
-        {1,1},
-        {0,0}
-    }, //J
-
-    {
-        {0,1},
-        {0,0},
-        {0,1}
-    }, //K
-
-    {
-        {0,1},
-        {0,1},
-        {0,1}
-    }, //L
-
-    {
-        {1,1},
-        {0,0},
-        {0,1}
-    }, //M
-
-    {
-        {1,1},
-        {1,0},
-        {0,1}
-    }, //N
-
-    {
-        {0,1},
-        {1,0},
-        {0,1}
-    }, //O
-
-    {
-        {1,1},
-        {0,1},
-        {0,1}
-    }, //P
-
-    {
-        {1,1},
-        {1,1},
-        {0,1}
-    }, //Q
-
-    {
-        {0,1},
-        {1,1},
-        {0,1}
-    }, //R
-
-    {
-        {1,0},
-        {0,1},
-        {0,1}
-    }, //S
-
-    {
-        {1,0},
-        {1,1},
-        {0,1}
-    }, //T
-
-    {
-        {0,1},
-        {0,0},
-        {1,1}
-    }, //U
-
-    {
-        {0,1},
-        {0,1},
-        {1,1}
-    }, //V
-
-    {
-        {1,0},
-        {1,1},
-        {1,0}
-    }, //W
-
-    {
-        {1,1},
-        {0,0},
-        {1,1}
-    }, //X
-
-    {
-        {1,1},
-        {1,0},
-        {1,1}
-    }, //Y
-
-    {
-        {0,1},
-        {1,0},
-        {1,1}
-    }, //Z
+int alpha[26][6] =
+{
+    {0,1,0,0,0,0}, //A
+    {0,1,0,1,0,0}, //B
+    {1,1,0,0,0,0}, //C
+    {1,1,1,0,0,0}, //D
+    {0,1,1,0,0,0}, //E
+    {1,1,0,1,0,0}, //F
+    {1,1,1,1,0,0}, //G
+    {0,1,1,1,0,0}, //H
+    {1,0,0,1,0,0}, //I
+    {1,0,1,1,0,0}, //J
+    {0,1,0,0,0,1}, //K
+    {0,1,0,1,0,1}, //L
+    {1,1,0,0,0,1}, //M
+    {1,1,1,0,0,1}, //N
+    {0,1,1,0,0,1}, //O
+    {1,1,0,1,0,1}, //P
+    {1,1,1,1,0,1}, //Q
+    {0,1,1,1,0,1}, //R
+    {1,0,0,1,0,1}, //S
+    {1,0,1,1,0,1}, //T
+    {0,1,0,0,1,1}, //U
+    {0,1,0,1,1,1}, //V
+    {1,0,1,1,1,0}, //W
+    {1,1,0,0,1,1}, //X
+    {1,1,1,0,1,1}, //Y
+    {0,1,1,0,1,1}, //Z
 };
 
-char wrd[10] = {'h','e','l','l','o','w','o','r','l','d'};
+char wrd[5] = {'h','e','l','l','o'};
+
+void printRow(int *ptr, int len);
+void printWrd(int wrdLen);
+
+void movePaper(int deg);
+void moveCart(int deg);
+void moveCrank(int deg);
+
+task main()
+{
+	/*
+	motor[motorA] = -10; //paper
+	motor[motorD] = -10; //cart
+	motor[motorC] = 30;  //crank
+	wait1Msec(10000);
+	*/
+	int wrdLen = 5;
+	printWrd(wrdLen);
+}
 
 void printWrd(int wrdLen) {
-    int row[wrdLen*2];
-    int indices[wrdLen];
+    int row[10];		//wrdLen*2
+    int indices[4]; //wrdLen
 
     for (int i = 0; i < wrdLen; i++) {
-        //determining indices to be used for alpha (using ascii codes)
+        //determining indices to be used for alpha (using aski codes)
         //i.e. what letter is in wrd[i]
         indices[i] = wrd[i] - 'a';
     }
@@ -306,8 +197,8 @@ void printWrd(int wrdLen) {
     for(int i = 0; i < 3; i++) {
         int k = 0;
         for (int j = 0; j < wrdLen; j++) {
-            row[k]=alpha[indices[j]][i][0];
-            row[k+1]=alpha[indices[j]][i][1];
+            row[k]=AB[indices[j]][i*2];
+            row[k+1]=AB[indices[j]][i*2 + 1];
             k+=2;
         }
         printRow(&row[0], wrdLen*2);
@@ -345,7 +236,6 @@ void moveCrank(int deg){
 	while (nMotorEncoder[motorC] <= deg) {}
 	motor[motorC] = 0;
 }
-
 
 task main() {
     systemStart();
