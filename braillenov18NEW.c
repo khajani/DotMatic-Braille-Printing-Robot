@@ -1,5 +1,48 @@
+
+/*
+
 #include "PC_FileIO.c"
 
+char chars[11];  // global array storing word (10 characters + null terminator)
+
+int readWordFromFile(string fileName) {
+    TFileHandle fin;
+    bool fileHandle = openReadPC(fin, fileName);
+
+    if (!fileHandle) {
+        displayTextLine(4, "Error opening file");
+        return -1;
+    }
+
+    int charCount = 0;
+    char c = 0;
+    int whiteSpace = 0;
+
+    while (readCharPC(fin, c) && charCount < 10 && whiteSpace == 0) {
+        if (c == ' ' || c == '\n' || c == '\t') {
+            whiteSpace = 1;
+        } else {
+            chars[charCount] = c;
+            charCount++;
+            displayTextLine(4, chars);
+            wait1Msec(8000);
+        }
+    }
+
+    chars[charCount] = '\0';  // null-terminate the string
+    closeFilePC(fin);
+
+    return charCount;  // return the number of characters in word (excluding null terminator)
+}
+
+task main()
+{
+	string fileName = "input.txt";
+	readWordFromFile(fileName);
+}
+*/
+
+#include "PC_FileIO.c"
 //--------------------------------
 //configure sensors
 SensorType [S1] = sensorEV3 Touch ;
