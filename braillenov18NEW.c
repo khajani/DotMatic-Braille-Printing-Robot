@@ -1,6 +1,3 @@
-
-/*
-
 #include "PC_FileIO.c"
 
 char chars[11];  // global array storing word (10 characters + null terminator)
@@ -24,8 +21,6 @@ int readWordFromFile(string fileName) {
         } else {
             chars[charCount] = c;
             charCount++;
-            displayTextLine(4, chars);
-            wait1Msec(8000);
         }
     }
 
@@ -35,59 +30,19 @@ int readWordFromFile(string fileName) {
     return charCount;  // return the number of characters in word (excluding null terminator)
 }
 
-task main()
-{
-	string fileName = "input.txt";
-	readWordFromFile(fileName);
-}
-*/
-
-#include "PC_FileIO.c"
-
 //--------------------------------
 void systemStart()
 {
    displayTextLine(3, "Press Enter to Start Printing");
 
-   wait1Msec(1000);
+   wait1Msec(10000);
 
    while(!getButtonPress(buttonEnter))
-        {}
+   {}
 
    while(getButtonPress(buttonAny))
     {}
 
-}
-
-//--------------------------------
-char wrd[11];  // global array storing word (10 characters + null terminator)
-
-int readWordFromFile(string fileName) {
-    TFileHandle fin;
-    bool fileHandle = openReadPC(fin, fileName);
-
-    if (!fileHandle) {
-        displayTextLine(4, "Error opening file");
-        return -1;
-    }
-
-    int charCount = 0;
-    char c = 0;
-    int whiteSpace = 0;
-
-    while (readCharPC(fin, c) && charCount < 10 && whiteSpace == 0) {
-        if (c == ' ' || c == '\n' || c == '\t') {
-            whiteSpace = 1;
-        } else {
-            wrd[charCount] = c;
-            charCount++;
-        }
-    }
-
-    wrd[charCount] = '\0';  // null-terminate the string
-    closeFilePC(fin);
-
-    return charCount;  // return the number of characters in word (excluding null terminator)
 }
 
 //--------------------------------
@@ -287,4 +242,11 @@ task main() {
 
         systemStop();
     }
+}
+
+
+task main()
+{
+	string fileName = "input.txt";
+	readWordFromFile(fileName);
 }
