@@ -180,6 +180,62 @@ task main()
 	printWrd(wrdLen);
 }
 
+task main() {
+	SensorType [S1] = sensorEV3_Touch;
+	int statusEStop = SensorValue[S1];
+
+	systemStart();
+	string fileName = "input.txt";
+
+	int wordLength = readWordFromFile(fileName);
+
+	if (wordLength < 0) {
+        displayTextLine(5, "Exiting due to file read error.");
+        //return;
+    }
+
+    // Display the word read for debugging
+    displayTextLine(5, "Word: %s", word);
+
+    while (true) {
+
+        // Check for E-Stop status before printing
+        if (SensorValue[S1]) {
+            eStop(SensorValue[S1]);
+        }
+
+        // Allocate memory for row data
+        int rowData[wordLength * 2];
+        int indices[wordLength];
+
+        // Determine letter indices
+        for (int i = 0; i < wordLength; i++) {
+            indices[i] = word[i] - 'a';
+        }
+
+        // Loop through each of the three Braille rows
+        for (int row = 0; row < 3; row++) {
+            // Populate row data for the current row
+            for (int i = 0; i < wordLength; i++) {
+                rowData[i * 2] = alpha[indices[i]][row][0];
+                rowData[i * 2 + 1] = alpha[indices[i]][row][1];
+            }
+
+            // Print the current row
+            printRows(wordLength, rowData);
+
+            movePaper(50);
+
+            // Check for E-Stop between rows
+            if (SensorValue[S1]) {
+                eStop(SensorValue[S1]);
+            }
+        }
+
+        systemStop();
+    }
+}
+
 void printWrd(int wrdLen) {
     int row[10];		//wrdLen*2
     int indices[4]; //wrdLen
@@ -231,60 +287,4 @@ void moveCrank(int deg){
 	motor[motorC] = -10;
 	while (nMotorEncoder[motorC] <= deg) {}
 	motor[motorC] = 0;
-}
-
-task main() {
-	SensorType [S1] = sensorEV3_Touch;
-	int statusEStop = SensorValue[S1];
-	
-	systemStart();
-	string fileName = "input.txt";
-	
-	int wordLength = readWordFromFile(fileName);
-    
-	if (wordLength < 0) {
-        displayTextLine(5, "Exiting due to file read error.");
-        //return;
-    }
-
-    // Display the word read for debugging
-    displayTextLine(5, "Word: %s", word);
-
-    while (true) {
-
-        // Check for E-Stop status before printing
-        if (SensorValue[S1]) {
-            eStop(SensorValue[S1]);
-        }
-
-        // Allocate memory for row data
-        int rowData[wordLength * 2];
-        int indices[wordLength];
-
-        // Determine letter indices
-        for (int i = 0; i < wordLength; i++) {
-            indices[i] = word[i] - 'a';
-        }
-
-        // Loop through each of the three Braille rows
-        for (int row = 0; row < 3; row++) {
-            // Populate row data for the current row
-            for (int i = 0; i < wordLength; i++) {
-                rowData[i * 2] = alpha[indices[i]][row][0];
-                rowData[i * 2 + 1] = alpha[indices[i]][row][1];
-            }
-
-            // Print the current row
-            printRows(wordLength, rowData);
-
-            movePaper(50);
-
-            // Check for E-Stop between rows
-            if (SensorValue[S1]) {
-                eStop(SensorValue[S1]);
-            }
-        }
-
-        systemStop();
-    }
 }
