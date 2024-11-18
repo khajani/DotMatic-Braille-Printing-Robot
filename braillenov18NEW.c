@@ -60,7 +60,7 @@ void eStop (int statusEStop){
         displayTextLine(5, "%d secs until paper roll out.", TIME_UNTIL_ROLL);
         wait1Msec (15000) ;
 
-        motor[motorA] = 10;
+        motor[motorA] = -10;
         while (abs(nMotorEncoder[motorA]) <= 180){}
         motor[motorA] = 0;
     }
