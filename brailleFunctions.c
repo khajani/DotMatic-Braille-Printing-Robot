@@ -1,13 +1,10 @@
-//--------------------------------
-/*
-bool ALPHABET[1][3][2]
-{
-    {{0,0},
-     {0,0},
-     {0,0}} //" "
-}
-*/
 
+//--------------------------------
+//configure sensors
+SensorType [S1] = sensorEV3 Touch ;
+int statusEStop = SensorValue[S1];
+
+//--------------------------------
 void printRows(int numLetters, int *ptr){};
 
 void movePaper(int deg){};
@@ -88,9 +85,6 @@ void printWord(string words,int alphabet[][][], int print[])
     }
     }
 }
-
-SensorType [S1] = sensorEV3 Touch ;
-int statusEStop = SensorValue[S1];
 
 void eStop (int statusEStop){
 
@@ -328,18 +322,6 @@ void printWrd(int wrdLen);
 void movePaper(int deg);
 void moveCart(int deg);
 void moveCrank(int deg);
-
-task main()
-{
-	/*
-	motor[motorA] = -10; //paper
-	motor[motorD] = -10; //cart
-	motor[motorC] = 30;  //crank
-	wait1Msec(10000);
-	*/
-	int wrdLen = 10;
-	printWrd(wrdLen);
-}
 
 void printWrd(int wrdLen) {
     int row[wrdLen*2];
