@@ -114,26 +114,12 @@ int alpha[26][6] =
     {0,1,1,0,1,1}, //Z
 };
 
-//char wrd[5] = {'h','e','l','l','o'};
-
 void printRow(int *ptr, int len);
 void printWrd(int wrdLen);
 
 void movePaper(int deg);
 void moveCart(int deg);
 void moveCrank(int deg);
-
-task main()
-{
-	/*
-	motor[motorA] = -10; //paper
-	motor[motorD] = -10; //cart
-	motor[motorC] = 30;  //crank
-	wait1Msec(10000);
-	*/
-	int wrdLen = 5;
-	printWrd(wrdLen);
-}
 
 void printWrd(int wrdLen) {
     int row[10];		//wrdLen*2
@@ -249,4 +235,17 @@ task main()
 {
 	string fileName = "input.txt";
 	readWordFromFile(fileName);
+}
+
+
+task main()
+{
+	/*
+	motor[motorA] = -10; //paper
+	motor[motorD] = -10; //cart
+	motor[motorC] = 30;  //crank
+	wait1Msec(10000);
+	*/
+	int wrdLen = 5;
+	printWrd(wrdLen);
 }
