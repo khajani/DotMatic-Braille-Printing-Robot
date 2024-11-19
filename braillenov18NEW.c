@@ -1,7 +1,7 @@
 #include "PC_FileIO.c"
 
 // global array storing word (10 characters + null terminator)
-char wrd[11];
+char wrd[11] = {'h','e','l','l','o',NULL,NULL,NULL,NULL,NULL,NULL};
 
 //global array for the alphabet in braille
 int alpha[26][6] =
@@ -56,63 +56,24 @@ task main() {
 	int statusEStop = SensorValue[S1];
 
 	string fileName = "input.txt";
-	readWordFromFile(fileName);
 
 	systemStart();
-	string fileName = "input.txt";
 
+		readWordFromFile(fileName);
 	int wordLength = readWordFromFile(fileName);
 
 	if (wordLength < 0) {
         displayTextLine(5, "Exiting due to file read error.");
-        //return;
+
     }
+   printWord(wordLength);
 
-    // Display the word read for debugging
-    displayTextLine(5, "Word: %s", word);
-
-    while (true) {
-
-        // Check for E-Stop status before printing
-        if (SensorValue[S1]) {
-            eStop(SensorValue[S1]);
-        }
-
-        // Allocate memory for row data
-        int rowData[wordLength * 2];
-        int indices[wordLength];
-
-        // Determine letter indices
-        for (int i = 0; i < wordLength; i++) {
-            indices[i] = word[i] - 'a';
-        }
-
-        // Loop through each of the three Braille rows
-        for (int row = 0; row < 3; row++) {
-            // Populate row data for the current row
-            for (int i = 0; i < wordLength; i++) {
-                rowData[i * 2] = alpha[indices[i]][row][0];
-                rowData[i * 2 + 1] = alpha[indices[i]][row][1];
-            }
-
-            // Print the current row
-            printRows(wordLength, rowData);
-
-            movePaper(50);
-
-            // Check for E-Stop between rows
-            if (SensorValue[S1]) {
-                eStop(SensorValue[S1]);
-            }
-        }
-
+      // Check for E-Stop status before printing
+  if (SensorValue[S1]) {
+         eStop(SensorValue[S1]);
+      }
         systemStop();
     }
-}
-
-task main()
-{
-
 }
 
 int readWordFromFile(string fileName) {
@@ -219,32 +180,36 @@ void printWrd(int wrdLen) {
 }
 
 void printRow(int *ptr, int len) {
+	int count = 0;
+	nMotorEncoder[motorD] = 0;
 	for (int i = 0; i<len; i++) {
 		if (*ptr) {
 			moveCrank(360);
 		}
-		moveCart(8.25);
+		count+=nMotorEncoder[motorA];
+		moveCart(8.25, -10);
 		ptr++;
 	}
+	moveCart(count, 10);
 }
 
 void movePaper(int deg){
 	nMotorEncoder[motorA] = 0;
 	motor[motorA] = -10;
-	while (nMotorEncoder[motorA] <= deg) {}
+	while (abs(nMotorEncoder[motorA]) <= deg) {}
 	motor[motorA] = 0;
 }
 
-void moveCart(int deg){
+void moveCart(int deg, int pwr){
 	nMotorEncoder[motorD] = 0;
-	motor[motorD] = -10;
-	while (nMotorEncoder[motorD] <= deg) {}
+	motor[motorD] = pwr;
+	while (abs(nMotorEncoder[motorD]) <= deg) {}
 	motor[motorD] = 0;
 }
 
 void moveCrank(int deg){
 	nMotorEncoder[motorC] = 0;
 	motor[motorC] = -10;
-	while (nMotorEncoder[motorC] <= deg) {}
+	while (abs(nMotorEncoder[motorC]) <= deg) {}
 	motor[motorC] = 0;
 }
