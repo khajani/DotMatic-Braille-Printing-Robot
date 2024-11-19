@@ -1,7 +1,7 @@
 #include "PC_FileIO.c"
 
 // global array storing word (10 characters + null terminator)
-char wrd[11] = {'h','e','l','l','o',NULL,NULL,NULL,NULL,NULL,NULL};
+char wrd[11] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 
 //global array for the alphabet in braille
 int alpha[26][6] =
@@ -119,14 +119,22 @@ void eStop (){
         motor[motorC] = 0;
         motor[motorD] = 0;
 
-        const int TIME_UNTIL_ROLL = 15;
+        const int TIME_UNTIL_ROLL = 5;
 
         displayTextLine(5, "%d secs until paper roll out.", TIME_UNTIL_ROLL);
-        wait1Msec (15000) ;
+        wait1Msec (5000) ;
 
         motor[motorA] = 10;
         while (abs(nMotorEncoder[motorA]) <= 180){}
         motor[motorA] = 0;
+
+	displayTextLine(5, "Press down button to exit");
+	    
+    	while (!getButtonPress(buttonAny)){eStop();}
+
+    	while (getButtonPress(buttonDown)){eStop();}
+
+    	displayTextLine(4, "System Stopping.");
     }
 }
 
@@ -145,6 +153,39 @@ void systemStop (){
 		eStop();
     wait1Msec (15000) ;
     eStop();
+}
+
+void printRow(int *ptr, int len) {
+	int countCrank = 0;
+	float distMoved = 0;
+	nMotorEncoder[motorD] = 0;
+	
+	for (int i = 0; i<len; i++) {
+	
+		eStop();
+		moveCart(8.25, -10);
+		distMoved+=abs(nMotorEncoder[motorD]); 
+		eStop();
+		
+		
+		if (countCrank % 2 == 0){
+			moveCart(8.25, -10);
+			distMoved+=abs(nMotorEncoder[motorD]); 
+		}
+		
+		countCrank++;
+		
+		if (*ptr) {
+			eStop();
+			moveCrank(360);
+			wait1Msec(50);
+		}
+		ptr++;
+	}
+	eStop();
+	moveCart(distMoved, 10);
+	eStop();
+	movePaper(8.25);
 }
 
 void printWrd(int wrdLen) {
@@ -176,35 +217,6 @@ void printWrd(int wrdLen) {
 		movePaper(8.25);
 }
 
-void printRow(int *ptr, int len) {
-	int count = 0;
-	nMotorEncoder[motorD] = 0;
-
-	int countCrank = 0;
-	
-	for (int i = 0; i<len; i++) {
-		if (*ptr) {
-			eStop();
-			moveCrank(360);
-			wait1Msec(50);
-			countCrank++;
-		}
-
-		if (countCrank % 2 == 0){
-			moveCart(8.25, -10);
-		}
-		
-		count+=nMotorEncoder[motorA];
-		eStop();
-		moveCart(8.25, -10);
-		eStop();
-		ptr++;
-	}
-	eStop();
-	moveCart(count, 10);
-	eStop();
-	movePaper(8.25);
-}
 
 void movePaper(float deg){
 	nMotorEncoder[motorA] = 0;
