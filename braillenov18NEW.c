@@ -69,6 +69,8 @@ void eStop (int statusEStop){
 //--------------------------------
 void systemStop (){
 
+    displayTextLine(3, "Press down button to exit");  
+	
     while (!getButtonPress(buttonAny)){}
 
     while (getButtonPress(buttonDown)){}
