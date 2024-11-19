@@ -1,7 +1,7 @@
 #include "PC_FileIO.c"
 
 // global array storing word (10 characters + null terminator)
-char wrd[13] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+char wrd[18] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 
 //global array for the alphabet in braille
 int alpha[27][6] =
@@ -11,32 +11,20 @@ int alpha[27][6] =
     {1,1,0,0,0,0}, //C
     {1,1,0,1,0,0}, //D
     {1,0,0,1,0,0}, //E
-    {1,1,1,0,0,0}, //F 
+    {1,1,1,0,0,0}, //F
     {1,1,1,1,0,0}, //G
     {1,0,1,1,0,0}, //H
-    
     {0,1,1,0,0,0}, //I
-    
     {0,1,1,1,0,0}, //J
-    
     {1,0,0,0,1,0}, //K
-    
     {1,0,1,0,1,0}, //L
-    
     {1,1,0,0,1,0}, //M
-    
     {1,1,0,1,1,0}, //N
-    
     {1,0,0,1,1,0}, //O
-    
     {1,1,1,0,1,0}, //P
-    
     {1,1,1,1,1,0}, //Q
-    
     {1,0,1,1,1,0}, //R
-    
     {0,1,1,0,1,0}, //S
-    
     {0,1,1,1,1,0}, //T
     {1,0,0,0,1,1}, //U
     {1,0,1,0,1,1}, //V
@@ -44,7 +32,7 @@ int alpha[27][6] =
     {1,1,0,0,1,1}, //X
     {1,1,0,1,1,1}, //Y
     {1,0,0,1,1,1}, //Z
-
+    {0,0,0,0,0,0}  //
 };
 
 //fileio function
@@ -68,7 +56,7 @@ task main() {
 	SensorType [S1] = sensorEV3_Touch;
 	wait1Msec(50);
 
-	string fileName = "input.txt";
+	string fileName = "khajani.txt";
 	TFileHandle fin;
   bool fileHandle = openReadPC(fin, fileName);
 
@@ -92,16 +80,12 @@ task main() {
 
 int readWordFromFile(TFileHandle &fin) {
     int charCount = 0;
-    char c = 0;
+    char c = ' ';
     int wrdEnd = 0;
 
-    while (readCharPC(fin, c) && charCount < 10 && wrdEnd == 0) {
-        if (c == '.') {
-            wrdEnd = 1;
-        } else {
-            wrd[charCount] = c;
-            charCount++;
-        }
+    while (readCharPC(fin, c) && charCount < 17 && wrdEnd == 0) {
+    	wrd[charCount] = c;
+      charCount++;
     }
 
     wrd[charCount] = '\0';  // null-terminate the string
@@ -153,11 +137,11 @@ void eStop (){
 void systemStop (){
 
 		displayTextLine(4, "Press down button to exit");
-
+		eStop();
     while (!getButtonPress(buttonDown)){eStop();}
 
     while (getButtonPress(buttonAny)){eStop();}
-
+		eStop();
     displayTextLine(4, "System Stopping.");
 
     motor[motorC] = 0;
@@ -203,8 +187,8 @@ void printRow(int *ptr, int len) {
 }
 
 void printWrd(int wrdLen) {
-    int row[24];		//max of wrdLen*2
-    int indices[12]; //max of wrdLen
+    int row[34];		//max of wrdLen*2
+    int indices[17]; //max of wrdLen
 
     for (int i = 0; i < wrdLen; i++) {
     		eStop();
