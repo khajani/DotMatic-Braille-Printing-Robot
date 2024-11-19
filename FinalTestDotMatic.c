@@ -1,10 +1,10 @@
 #include "PC_FileIO.c"
 
 // global array storing word (10 characters + null terminator)
-char wrd[11] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
+char wrd[13] = {NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL};
 
 //global array for the alphabet in braille
-int alpha[26][6] =
+int alpha[27][6] =
 {
     {0,1,0,0,0,0}, //A
     {0,1,0,1,0,0}, //B
@@ -32,6 +32,7 @@ int alpha[26][6] =
     {1,1,0,0,1,1}, //X
     {1,1,1,0,1,1}, //Y
     {0,1,1,0,1,1}, //Z
+    {0,0,0,0,0,0}  //
 };
 
 //fileio function
@@ -62,16 +63,13 @@ task main() {
   if (fileHandle) {
   	systemStart();
 
-  	//try wrd[-1];
-		while (wrd[0]!='!') {
-			eStop();
-			int wrdLen = readWordFromFile(fin);
+		eStop();
+		int wrdLen = readWordFromFile(fin);
 
-			eStop();
-		  printWrd(wrdLen);
-		  eStop();
+		eStop();
+	  printWrd(wrdLen);
+	  eStop();
 
-	  }
 	  systemStop();
 	}
 	else {
@@ -190,15 +188,20 @@ void printRow(int *ptr, int len) {
 }
 
 void printWrd(int wrdLen) {
-    int row[20];		//max of wrdLen*2
-    int indices[10]; //max of wrdLen
+    int row[24];		//max of wrdLen*2
+    int indices[12]; //max of wrdLen
 
     for (int i = 0; i < wrdLen; i++) {
     		eStop();
         //determining indices to be used for alpha (using aski codes)
         //i.e. what letter is in wrd[i]
-        indices[i] = wrd[i] - 'a';
-        eStop();
+    		if (wrd[i] == '/') {
+    			indices [i] = 26;
+    			eStop();
+    		} else {
+        	indices[i] = wrd[i] - 'a';
+        	eStop();
+        }
     }
 
     for(int i = 0; i <3; i++) {
