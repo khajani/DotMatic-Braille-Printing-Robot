@@ -179,11 +179,21 @@ void printWrd(int wrdLen) {
 void printRow(int *ptr, int len) {
 	int count = 0;
 	nMotorEncoder[motorD] = 0;
+
+	int countCrank = 0;
+	
 	for (int i = 0; i<len; i++) {
 		if (*ptr) {
 			eStop();
 			moveCrank(360);
+			wait1Msec(50);
+			countCrank++;
 		}
+
+		if (countCrank % 2 == 0){
+			moveCart(8.25, -10);
+		}
+		
 		count+=nMotorEncoder[motorA];
 		eStop();
 		moveCart(8.25, -10);
