@@ -139,9 +139,12 @@ void eStop (){
 
 //--------------------------------
 void systemStop (){
-    while (!getButtonPress(buttonAny)){eStop();}
 
-    while (getButtonPress(buttonDown)){eStop();}
+		displayTextLine(4, "Press down button to exit");
+
+    while (!getButtonPress(buttonDown)){eStop();}
+
+    while (getButtonPress(buttonAny)){eStop();}
 
     displayTextLine(4, "System Stopping.");
 
