@@ -47,9 +47,9 @@ void printRow(int *ptr, int len);
 void printWrd(int wrdLen);
 
 //movement functions
-void movePaper(int deg); //y-axis
-void moveCart(int deg, int pwr);  //x-axis
-void moveCrank(int deg); //z-axis
+void movePaper(float deg); //y-axis
+void moveCart(float deg, int pwr);  //x-axis
+void moveCrank(float deg); //z-axis
 
 task main() {
 	SensorType [S1] = sensorEV3_Touch;
@@ -196,7 +196,7 @@ void printRow(int *ptr, int len) {
 	movePaper(8.25);
 }
 
-void movePaper(int deg){
+void movePaper(float deg){
 	nMotorEncoder[motorA] = 0;
 	eStop();
 	motor[motorA] = -10;
@@ -205,7 +205,7 @@ void movePaper(int deg){
 	eStop();
 }
 
-void moveCart(int deg, int pwr){
+void moveCart(float deg, int pwr){
 	eStop();
 	nMotorEncoder[motorD] = 0;
 	eStop();
@@ -215,7 +215,7 @@ void moveCart(int deg, int pwr){
 	eStop();
 }
 
-void moveCrank(int deg){
+void moveCrank(float deg){
 	nMotorEncoder[motorC] = 0;
 	eStop();
 	motor[motorC] = -10;
