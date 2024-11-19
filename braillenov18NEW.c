@@ -1,89 +1,9 @@
 #include "PC_FileIO.c"
 
-char chars[11];  // global array storing word (10 characters + null terminator)
+// global array storing word (10 characters + null terminator)
+char wrd[11];
 
-int readWordFromFile(string fileName) {
-    TFileHandle fin;
-    bool fileHandle = openReadPC(fin, fileName);
-
-    if (!fileHandle) {
-        displayTextLine(4, "Error opening file");
-        return -1;
-    }
-
-    int charCount = 0;
-    char c = 0;
-    int whiteSpace = 0;
-
-    while (readCharPC(fin, c) && charCount < 10 && whiteSpace == 0) {
-        if (c == ' ' || c == '\n' || c == '\t') {
-            whiteSpace = 1;
-        } else {
-            chars[charCount] = c;
-            charCount++;
-        }
-    }
-
-    chars[charCount] = '\0';  // null-terminate the string
-    closeFilePC(fin);
-
-    return charCount;  // return the number of characters in word (excluding null terminator)
-}
-
-//--------------------------------
-void systemStart()
-{
-   displayTextLine(3, "Press Enter to Start Printing");
-
-   wait1Msec(10000);
-
-   while(!getButtonPress(buttonEnter))
-   {}
-
-   while(getButtonPress(buttonAny))
-    {}
-
-}
-
-//--------------------------------
-
-void eStop (int statusEStop){
-
-    if (statusEStop > 0){
-        displayTextLine(4, "Emergency Stop Activated!");
-
-        motor[motorC] = 0;
-        motor[motorD] = 0;
-
-        const int TIME_UNTIL_ROLL = 15;
-
-        displayTextLine(5, "%d secs until paper roll out.", TIME_UNTIL_ROLL);
-        wait1Msec (15000) ;
-
-        motor[motorA] = 10;
-        while (abs(nMotorEncoder[motorA]) <= 180){}
-        motor[motorA] = 0;
-    }
-}
-
-//--------------------------------
-void systemStop (){
-
-    while (!getButtonPress(buttonAny)){}
-
-    while (getButtonPress(buttonDown)){}
-
-    displayTextLine(4, "System Stopping.");
-
-    motor[motorC] = 0;
-    motor[motorD] = 0;
-    motor[motorA] = 0;
-
-    wait1Msec (15000) ;
-
-}
-
-//--------------------------------
+//global array for the alphabet in braille
 int alpha[26][6] =
 {
     {0,1,0,0,0,0}, //A
@@ -114,28 +34,29 @@ int alpha[26][6] =
     {0,1,1,0,1,1}, //Z
 };
 
+//fileio function
+int readWordFromFile(string fileName);
+
+//start stop functions
+void systemStart();
+void systemStop ();
+void eStop (int statusEStop);
+
+//printing functions
 void printRow(int *ptr, int len);
 void printWrd(int wrdLen);
 
-void movePaper(int deg);
-void moveCart(int deg);
-void moveCrank(int deg);
-
-task main()
-{
-	/*
-	motor[motorA] = -10; //paper
-	motor[motorD] = -10; //cart
-	motor[motorC] = 30;  //crank
-	wait1Msec(10000);
-	*/
-	int wrdLen = 5;
-	printWrd(wrdLen);
-}
+//movement functions
+void movePaper(int deg); //y-axis
+void moveCart(int deg);  //x-axis
+void moveCrank(int deg); //z-axis
 
 task main() {
 	SensorType [S1] = sensorEV3_Touch;
 	int statusEStop = SensorValue[S1];
+
+	string fileName = "input.txt";
+	readWordFromFile(fileName);
 
 	systemStart();
 	string fileName = "input.txt";
@@ -187,6 +108,92 @@ task main() {
 
         systemStop();
     }
+}
+
+task main()
+{
+
+}
+
+int readWordFromFile(string fileName) {
+    TFileHandle fin;
+    bool fileHandle = openReadPC(fin, fileName);
+
+    if (!fileHandle) {
+        displayTextLine(4, "Error opening file");
+        return -1;
+    }
+
+    int charCount = 0;
+    char c = 0;
+    int whiteSpace = 0;
+
+    while (readCharPC(fin, c) && charCount < 10 && whiteSpace == 0) {
+        if (c == ' ' || c == '\n' || c == '\t') {
+            whiteSpace = 1;
+        } else {
+            wrd[charCount] = c;
+            charCount++;
+        }
+    }
+
+    wrd[charCount] = '\0';  // null-terminate the string
+    closeFilePC(fin);
+
+    return charCount;  // return the number of characters in word (excluding null terminator)
+}
+
+//--------------------------------
+void systemStart()
+{
+   displayTextLine(3, "Press Enter to Start Printing");
+
+   wait1Msec(10000);
+
+   while(!getButtonPress(buttonEnter))
+   {}
+
+   while(getButtonPress(buttonAny))
+   {}
+
+}
+
+//--------------------------------
+
+void eStop (int statusEStop){
+
+    if (statusEStop > 0){
+        displayTextLine(4, "Emergency Stop Activated!");
+
+        motor[motorC] = 0;
+        motor[motorD] = 0;
+
+        const int TIME_UNTIL_ROLL = 15;
+
+        displayTextLine(5, "%d secs until paper roll out.", TIME_UNTIL_ROLL);
+        wait1Msec (15000) ;
+
+        motor[motorA] = 10;
+        while (abs(nMotorEncoder[motorA]) <= 180){}
+        motor[motorA] = 0;
+    }
+}
+
+//--------------------------------
+void systemStop (){
+
+    while (!getButtonPress(buttonAny)){}
+
+    while (getButtonPress(buttonDown)){}
+
+    displayTextLine(4, "System Stopping.");
+
+    motor[motorC] = 0;
+    motor[motorD] = 0;
+    motor[motorA] = 0;
+
+    wait1Msec (15000) ;
+
 }
 
 void printWrd(int wrdLen) {
@@ -240,80 +247,4 @@ void moveCrank(int deg){
 	motor[motorC] = -10;
 	while (nMotorEncoder[motorC] <= deg) {}
 	motor[motorC] = 0;
-}
-
-task main() {
-	SensorType [S1] = sensorEV3_Touch;
-	int statusEStop = SensorValue[S1];
-	
-	systemStart();
-	string fileName = "input.txt";
-	
-	int wordLength = readWordFromFile(fileName);
-    
-	if (wordLength < 0) {
-        displayTextLine(5, "Exiting due to file read error.");
-        //return;
-    }
-
-    // Display the word read for debugging
-    displayTextLine(5, "Word: %s", word);
-
-    while (true) {
-
-        // Check for E-Stop status before printing
-        if (SensorValue[S1]) {
-            eStop(SensorValue[S1]);
-        }
-
-        // Allocate memory for row data
-        int rowData[wordLength * 2];
-        int indices[wordLength];
-
-        // Determine letter indices
-        for (int i = 0; i < wordLength; i++) {
-            indices[i] = word[i] - 'a';
-        }
-
-        // Loop through each of the three Braille rows
-        for (int row = 0; row < 3; row++) {
-            // Populate row data for the current row
-            for (int i = 0; i < wordLength; i++) {
-                rowData[i * 2] = alpha[indices[i]][row][0];
-                rowData[i * 2 + 1] = alpha[indices[i]][row][1];
-            }
-
-            // Print the current row
-            printRows(wordLength, rowData);
-
-            movePaper(50);
-
-            // Check for E-Stop between rows
-            if (SensorValue[S1]) {
-                eStop(SensorValue[S1]);
-            }
-        }
-
-        systemStop();
-    }
-}
-
-
-task main()
-{
-	string fileName = "input.txt";
-	readWordFromFile(fileName);
-}
-
-
-task main()
-{
-	/*
-	motor[motorA] = -10; //paper
-	motor[motorD] = -10; //cart
-	motor[motorC] = 30;  //crank
-	wait1Msec(10000);
-	*/
-	int wrdLen = 5;
-	printWrd(wrdLen);
 }
