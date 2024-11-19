@@ -35,12 +35,12 @@ int alpha[26][6] =
 };
 
 //fileio function
-int readWordFromFile(string fileName);
+int readWordFromFile(TFileHandle &fin);
 
 //start stop functions
 void systemStart();
 void systemStop ();
-void eStop (int statusEStop);
+void eStop ();
 
 //printing functions
 void printRow(int *ptr, int len);
@@ -48,43 +48,38 @@ void printWrd(int wrdLen);
 
 //movement functions
 void movePaper(int deg); //y-axis
-void moveCart(int deg);  //x-axis
+void moveCart(int deg, int pwr);  //x-axis
 void moveCrank(int deg); //z-axis
 
 task main() {
 	SensorType [S1] = sensorEV3_Touch;
-	int statusEStop = SensorValue[S1];
+	wait1Msec(50);
 
 	string fileName = "input.txt";
+	TFileHandle fin;
+  bool fileHandle = openReadPC(fin, fileName);
 
-	systemStart();
+  if (!fileHandle) {
+  	systemStart();
 
-		readWordFromFile(fileName);
-	int wordLength = readWordFromFile(fileName);
+		while (wrd[0]!='!') {
+			eStop();
+			int wrdLen = readWordFromFile(fin);
 
-	if (wordLength < 0) {
-        displayTextLine(5, "Exiting due to file read error.");
+			eStop();
+		  printWrd(wrdLen);
+		  eStop();
 
-    }
-   printWord(wordLength);
-
-      // Check for E-Stop status before printing
-  if (SensorValue[S1]) {
-         eStop(SensorValue[S1]);
-      }
-        systemStop();
-    }
+	  }
+	  systemStop();
+	}
+	else {
+		displayTextLine(4, "Error opening file");
+	}
+	closeFilePC(fin);
 }
 
-int readWordFromFile(string fileName) {
-    TFileHandle fin;
-    bool fileHandle = openReadPC(fin, fileName);
-
-    if (!fileHandle) {
-        displayTextLine(4, "Error opening file");
-        return -1;
-    }
-
+int readWordFromFile(TFileHandle &fin) {
     int charCount = 0;
     char c = 0;
     int whiteSpace = 0;
@@ -99,31 +94,26 @@ int readWordFromFile(string fileName) {
     }
 
     wrd[charCount] = '\0';  // null-terminate the string
-    closeFilePC(fin);
 
     return charCount;  // return the number of characters in word (excluding null terminator)
 }
 
 //--------------------------------
-void systemStart()
-{
-   displayTextLine(3, "Press Enter to Start Printing");
-
-   wait1Msec(10000);
-
-   while(!getButtonPress(buttonEnter))
-   {}
-
-   while(getButtonPress(buttonAny))
-   {}
-
+void systemStart(){
+	displayTextLine(3, "Press Enter to Start Printing");
+ 	eStop();
+ 	wait1Msec(10000);
+ 	eStop();
+ 	while(!getButtonPress(buttonEnter))
+ 	{eStop();}
+  while(getButtonPress(buttonAny))
+  {eStop();}
 }
 
 //--------------------------------
 
-void eStop (int statusEStop){
-
-    if (statusEStop > 0){
+void eStop (){
+    if (SensorValue[S1]){
         displayTextLine(4, "Emergency Stop Activated!");
 
         motor[motorC] = 0;
@@ -142,10 +132,9 @@ void eStop (int statusEStop){
 
 //--------------------------------
 void systemStop (){
+    while (!getButtonPress(buttonAny)){eStop();}
 
-    while (!getButtonPress(buttonAny)){}
-
-    while (getButtonPress(buttonDown)){}
+    while (getButtonPress(buttonDown)){eStop();}
 
     displayTextLine(4, "System Stopping.");
 
@@ -153,30 +142,38 @@ void systemStop (){
     motor[motorD] = 0;
     motor[motorA] = 0;
 
+		eStop();
     wait1Msec (15000) ;
-
+    eStop();
 }
 
 void printWrd(int wrdLen) {
-    int row[10];		//wrdLen*2
-    int indices[4]; //wrdLen
+    int row[20];		//max of wrdLen*2
+    int indices[10]; //max of wrdLen
 
     for (int i = 0; i < wrdLen; i++) {
+    		eStop();
         //determining indices to be used for alpha (using aski codes)
         //i.e. what letter is in wrd[i]
         indices[i] = wrd[i] - 'a';
+        eStop();
     }
 
-    for(int i = 0; i < 3; i++) {
+    for(int i = 0; i <3; i++) {
+    		eStop();
         int k = 0;
         for (int j = 0; j < wrdLen; j++) {
+        		eStop();
             row[k]=alpha[indices[j]][i*2];
             row[k+1]=alpha[indices[j]][i*2 + 1];
             k+=2;
+            eStop();
         }
+        eStop();
         printRow(&row[0], wrdLen*2);
     }
-
+    eStop();
+		movePaper(8.25);
 }
 
 void printRow(int *ptr, int len) {
@@ -184,32 +181,45 @@ void printRow(int *ptr, int len) {
 	nMotorEncoder[motorD] = 0;
 	for (int i = 0; i<len; i++) {
 		if (*ptr) {
+			eStop();
 			moveCrank(360);
 		}
 		count+=nMotorEncoder[motorA];
+		eStop();
 		moveCart(8.25, -10);
+		eStop();
 		ptr++;
 	}
+	eStop();
 	moveCart(count, 10);
+	eStop();
+	movePaper(8.25);
 }
 
 void movePaper(int deg){
 	nMotorEncoder[motorA] = 0;
+	eStop();
 	motor[motorA] = -10;
-	while (abs(nMotorEncoder[motorA]) <= deg) {}
+	while (abs(nMotorEncoder[motorA]) <= deg) {eStop();}
 	motor[motorA] = 0;
+	eStop();
 }
 
 void moveCart(int deg, int pwr){
+	eStop();
 	nMotorEncoder[motorD] = 0;
+	eStop();
 	motor[motorD] = pwr;
-	while (abs(nMotorEncoder[motorD]) <= deg) {}
+	while (abs(nMotorEncoder[motorD]) <= deg) {eStop();}
 	motor[motorD] = 0;
+	eStop();
 }
 
 void moveCrank(int deg){
 	nMotorEncoder[motorC] = 0;
+	eStop();
 	motor[motorC] = -10;
-	while (abs(nMotorEncoder[motorC]) <= deg) {}
+	while (abs(nMotorEncoder[motorC]) <= deg) {eStop();}
 	motor[motorC] = 0;
+	eStop();
 }
