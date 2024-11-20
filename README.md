@@ -32,6 +32,8 @@ DotMatic translates text into braille alphabet patterns and prints them onto pap
 
 ### Understanding Braille Printing  
 Braille is composed of characters with up to 3 rows and 2 columns of raised dots per letter. DotMatic translates text into this tactile system and prints it on paper using precise motor control and a custom-designed mechanism.  
+![image](https://github.com/user-attachments/assets/0368413c-44db-4566-a757-9dbd0af59d9b)
+
 
 ---
 
