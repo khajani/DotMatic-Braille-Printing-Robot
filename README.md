@@ -51,7 +51,7 @@ Braille is composed of characters with up to 3 rows and 2 columns of raised dots
 
 ### Printing Process  
 1. **Starting the Program**:  
-   - The LEGO EV3 brick displays the message *"Press Enter to Start."*  
+   - The LEGO EV3 brick displays the message asking the user to press the Enter button to start
    - Once the user presses the "Enter" button, the program begins reading the formatted text file.  
 
 2. **Printing the First Braille Row**:  
@@ -74,7 +74,9 @@ Braille is composed of characters with up to 3 rows and 2 columns of raised dots
 5. **Completion**:  
    - Once printing is finished, the LEGO EV3 brick displays *"System Complete."*  
    - The user must press the "Down" button to stop the system.  
-   - The paper can then be removed and flipped to read the printed braille.  
+   - The paper can then be removed and flipped to read the printed braille.
+   - ![WhatsApp Image 2024-11-20 at 17 33 58_9284ea73](https://github.com/user-attachments/assets/336b2a99-8757-45dd-adef-6feeb6a0dcaf)
+
 
 ---
 
