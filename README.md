@@ -1,6 +1,6 @@
-# DotMatic: A Braille Printer for Young Learners  
+# DotMatic: A Braille Printer
 
-DotMatic is an affordable, portable, and user-friendly braille printer designed to help kindergarten students learn the braille alphabet. By leveraging accessible technologies, it bridges the gap in early braille education, creating an inclusive and engaging learning experience for young children.  
+DotMatic is a compact and user-friendly braille printer designed to improve access to braille for individuals who are blind or visually impaired. With its affordable, portable design, DotMatic provides a practical solution for creating braille documents and enhancing accessibility in everyday life.
 
 ---
 
