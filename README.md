@@ -1,6 +1,6 @@
 # DotMatic: A Braille Printer
 
-DotMatic is a compact and user-friendly braille printer designed to improve access to braille. With its affordable, portable design, DotMatic provides a practical solution for creating braille documents and enhancing accessibility in everyday life.
+DotMatic is a compact and user-friendly braille printer designed to improve access to braille to teach children. With its affordable, portable design, DotMatic provides a practical solution for creating braille documents and enhancing accessibility in everyday life.
 
 https://github.com/user-attachments/assets/3e55ad5c-6397-4724-b218-f87f492b8c51
 
@@ -16,7 +16,7 @@ DotMatic translates text into braille alphabet patterns and prints them onto pap
 - **LEGO EV3 Brick**: The core computing unit.  
 - **LEGO Servo Motors (x3)**: Provides controlled movement for precise braille printing.  
 - **Touch Sensor**: Used for user interaction and operational control.  
-- **Laser-Cut Gear Racks (x2)**: Custom-made for smooth and accurate linear motion.  
+- **Laser-Cut Wooden Gear Racks (x2)**: Custom-made for smooth and accurate linear motion.  
 - **Foam Paper**: Acts as the base below paper.
 
 ### Software  
@@ -66,7 +66,7 @@ Braille is composed of characters with up to 3 rows and 2 columns of raised dots
    - After completing a word, the cart moves back to its starting position.  
 
 3. **Transition to the Next Row**:  
-   - The paper rolls forward by 2.5 mm to position for the second row.  
+   - The paper rolls forward 2.5 mm to position for the second row.  
    - The second row of the sentence is printed using the same process as above.  
    - After completing the second row, the cart resets, and the third row is printed.  
 
