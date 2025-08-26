@@ -97,7 +97,7 @@ Braille is composed of characters with up to 3 rows and 2 columns of raised dots
 ### Challenges & Solutions​
 1. **​Cart Movement​:**
    
-   <img width="572" height="762" alt="image" src="https://github.com/user-attachments/assets/da4858cb-648b-4142-aad6-a1035856b5e4" />
+   - <img width="286" height="381" alt="image" src="https://github.com/user-attachments/assets/da4858cb-648b-4142-aad6-a1035856b5e4" />
    - Initial design took up too much space
    -> Optimize the use of one motor and conserve space with a gear assembly on the side of the cart
    -> As the motor rotated, the gears turned, moving along the wooden rack
@@ -105,7 +105,7 @@ Braille is composed of characters with up to 3 rows and 2 columns of raised dots
   
 2. **​Vibrations When Punching​:**
    
-   <img width="432" height="446" alt="image" src="https://github.com/user-attachments/assets/70169a6b-73fc-4bd5-afdd-0b7e43010ca6" />
+   - <img width="216" height="223" alt="image" src="https://github.com/user-attachments/assets/70169a6b-73fc-4bd5-afdd-0b7e43010ca6" />
    - With every punch, the cart used to rise off the wooden rack
    - Negatively impacted printing by making spacing/punching inconsistent and less accurate
    -> I secured the cart onto the rack at the bottom with LEGO pieces
@@ -114,17 +114,16 @@ Braille is composed of characters with up to 3 rows and 2 columns of raised dots
 
 3.  **​Crank​:**
    
-   https://github.com/user-attachments/assets/90ecc609-a5c9-40f2-b07d-f480e8e6cf2c
+   - https://github.com/user-attachments/assets/90ecc609-a5c9-40f2-b07d-f480e8e6cf2c
    - Crank was not punching perpendicular to the foam paper, making printing less accurate
    - I realized the stylus height kept adjusting and it vibrated with every punch because it dragged onto the paper
    -> I modified the crank and secured the stylus inside a U-shaped connector
    -> Through trial and error, I found the optimal stylus height and secured it
 
 4. **​Stylus Tip​:**
-   <img width="674" height="628" alt="image" src="https://github.com/user-attachments/assets/613fd6d6-b10b-4681-a2ca-770a4cd15434" />
-   
-  - The tip needed to be fine enough to create raised dots in the paper without piercing through
-  -> Decided on using a push pin as the tip through trial and error
+   - <img width="337" height="314" alt="image" src="https://github.com/user-attachments/assets/613fd6d6-b10b-4681-a2ca-770a4cd15434" />
+   - The tip needed to be fine enough to create raised dots in the paper without piercing through
+   -> Decided on using a push pin as the tip through trial and error
     
 ---
 
