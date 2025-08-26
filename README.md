@@ -2,12 +2,15 @@
 
 DotMatic is a compact and user-friendly braille printer designed to improve access to braille to teach children. With its affordable, portable design, DotMatic provides a practical solution for creating braille documents and enhancing accessibility in everyday life.
 
-https://github.com/user-attachments/assets/3e55ad5c-6397-4724-b218-f87f492b8c51
+https://github.com/user-attachments/assets/228a2c76-e878-4f01-a799-a325bdfec083
+
 
 ---
 
 ## Project Overview  
 DotMatic translates text into braille alphabet patterns and prints them onto paper using a precise, motor-driven system. The design prioritizes simplicity, portability, and cost-effectiveness, making it ideal for classrooms and homes.  
+
+https://github.com/user-attachments/assets/3e55ad5c-6397-4724-b218-f87f492b8c51
 
 ---
 
